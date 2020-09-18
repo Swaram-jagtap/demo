@@ -1,0 +1,64 @@
+server.port: 8090
+
+
+spring:
+  application:
+    name: demo
+  sleuth:
+    traceId128: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:26257/demodb?sslmode=disable
+    username: root
+    password:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      autocommit: false
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        format_sql: true
+      show-sql: true
+    open-in-view: false
+
+endpoints:
+  actuator:
+    enabled: true
+
+#management:
+#    endpoints:
+#      web:
+#        base-path: "/"
+#        path-mapping:
+#          prometheus: "metrics"
+#        exposure:
+#          include: ["health", "info", "prometheus","threaddump","heapdump"]
+#    endpoint:
+#      heap:
+#        enabled: true
+#      threaddump:
+#        enabled: true
+#      prometheus:
+#        enabled: true
+#      health:
+#        enabled: true
+#    info:
+#      git:
+#        mode: full
+#    metrics:
+#      binders:
+#        jvm.enabled: true
+#        logback.enabled: true
+#      export:
+#        prometheus:
+#          descriptions: true
+#          enabled: true
+#      distribution:
+#        percentiles-histogram[http.server.requests]: true
+#        percentiles:
+#          http.server.requests: 0.50, 0.75
+
+#lombok:
+#  anyConstructor:
+#    addConstructorProperties: true
