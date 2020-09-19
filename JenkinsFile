@@ -61,7 +61,7 @@ pipeline {
         }
         stage('Deploy our image final') {
             steps{
-                sh 'docker run -d  --net=roachnet  -p 8091:8080 swaramdocker/hackermen:$BUILD_NUMBER'
+                sh 'docker run -d  --net=roachnet  -p 8091:8090 swaramdocker/hackermen:$BUILD_NUMBER'
             }
         }
         stage('Security Check') {
