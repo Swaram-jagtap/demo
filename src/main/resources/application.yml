@@ -8,7 +8,7 @@ spring:
     traceId128: true
 
   datasource:
-    url: jdbc:postgresql://localhost:26257/demodb?sslmode=disable
+    url: jdbc:postgresql://roach6:26257/demodb?sslmode=disable
     username: root
     password:
     driver-class-name: org.postgresql.Driver

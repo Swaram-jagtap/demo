@@ -1,4 +1,14 @@
 pipeline {
+       environment {
+
+        registry = "swaramdocker/hackermen"
+
+        registryCredential = 'swaramdocker'
+
+        dockerImage = ''
+
+    }
+
     agent any
     stages {
         stage('Static Analysis') {
@@ -6,9 +16,52 @@ pipeline {
                 echo 'Run the static analysis to the code'
             }
         }
-        stage('Compile') {
+        stage('Unit & Integration Tests') {
             steps {
-                echo 'Compile the source code'
+                script {
+                    //try {
+                        sh './gradlew clean build -x test --no-daemon' //run a gradle task
+                    //} finally {
+                    //    junit '**/build/test-results/test/*.xml' //make the junit test results available in any case (success & failure)
+                    //}
+                }
+            }
+        }
+
+        stage('Building our image') {
+
+            steps {
+
+                script {
+
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+
+                }
+
+            }
+
+        }
+
+        stage('push image') {
+
+            steps {
+
+                script {
+
+                    docker.withRegistry( '', registryCredential ) {
+
+                        dockerImage.push()
+
+                    }
+
+                }
+
+            }
+
+        }
+        stage('Deploy our image final') {
+            steps{
+                sh 'docker run -d  --net=roachnet  -p 8091:8080 swaramdocker/hackermen:$BUILD_NUMBER'
             }
         }
         stage('Security Check') {
